@@ -7,6 +7,7 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 // Optimize font loading
 const inter = Inter({
@@ -34,7 +35,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <ClerkProvider
         appearance={{
           layout: {
@@ -56,10 +57,12 @@ export default function RootLayout({
         }}
       >
         <body className="min-h-screen antialiased">
-          <Toaster />
-          <main className="animate-fade">
-            {children}
-          </main>
+          <ThemeProvider>
+            <Toaster />
+            <main className="animate-fade">
+              {children}
+            </main>
+          </ThemeProvider>
         </body>
       </ClerkProvider>
     </html>
