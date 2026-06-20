@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import {
   SYSTEM_PROMPT,
   type AiMode,
@@ -121,10 +120,11 @@ function parseAnthropicStream(
 }
 
 export async function POST(req: NextRequest) {
-  const { userId } = auth();
-  if (!userId) {
-    return new Response('Unauthorized', { status: 401 });
-  }
+  // EXPLORE MODE: the auth check is disabled so guests can use the copilot
+  // without signing in. To re-enable, restore:
+  //   import { auth } from '@clerk/nextjs/server';
+  //   const { userId } = auth();
+  //   if (!userId) return new Response('Unauthorized', { status: 401 });
 
   let body: AiRouteBody;
   try {

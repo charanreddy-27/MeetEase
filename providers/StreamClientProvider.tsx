@@ -11,28 +11,47 @@ interface StreamClientProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Stable guest identity so unauthenticated visitors can still explore the app
+ * (and use video, once Stream keys are configured) without signing in.
+ */
+const getGuestId = () => {
+  if (typeof window === 'undefined') return 'guest';
+  const KEY = 'meetease-guest-id';
+  let id = window.localStorage.getItem(KEY);
+  if (!id) {
+    id = `guest-${Math.random().toString(36).slice(2, 10)}`;
+    window.localStorage.setItem(KEY, id);
+  }
+  return id;
+};
+
 const StreamClientProvider = ({ children }: StreamClientProviderProps) => {
   const { user, isLoaded } = useUser();
   const [videoClient, setVideoClient] = useState<StreamVideoClient>();
 
   useEffect(() => {
-    if (!isLoaded || !user) return;
-    if (!apiKey) {
-      console.error('Stream API key is missing');
-      return;
-    }
+    // Wait for Clerk to resolve whether someone is signed in.
+    if (!isLoaded) return;
+    // No Stream key configured → skip video init; the app stays explorable.
+    if (!apiKey) return;
+
+    const isGuest = !user;
+    const guestId = getGuestId();
+    const streamUser = isGuest
+      ? { id: guestId, name: 'Guest' }
+      : { id: user.id, name: user.username || user.id, image: user.imageUrl };
 
     const client = new StreamVideoClient({
       apiKey,
-      user: {
-        id: user.id,
-        name: user.username || user.id,
-        image: user.imageUrl,
-      },
+      user: streamUser,
       tokenProvider: async () => {
         try {
           const response = await fetch('/api/get-token', {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            // Guests send their generated id so the server can mint a token.
+            body: JSON.stringify(isGuest ? { guestId } : {}),
           });
 
           if (!response.ok) {
@@ -58,7 +77,12 @@ const StreamClientProvider = ({ children }: StreamClientProviderProps) => {
     };
   }, [user, isLoaded]);
 
-  if (!videoClient) return <Loader />;
+  // Still resolving auth state.
+  if (!isLoaded) return <Loader />;
+
+  // EXPLORE MODE: if we couldn't create a video client (e.g. Stream keys aren't
+  // configured), let people browse the app anyway — just without live video.
+  if (!videoClient) return <>{children}</>;
 
   return <StreamVideo client={videoClient}>{children}</StreamVideo>;
 };

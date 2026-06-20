@@ -1,16 +1,28 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-const isPublicRoute = createRouteMatcher([
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/api/webhook/clerk(.*)',
-]);
+// ─────────────────────────────────────────────────────────────────────────────
+// 🚪 EXPLORE MODE — authentication is currently DISABLED.
+// Anyone can browse the app without signing in. Clerk is still loaded (so login
+// works if a user chooses to), but no route is force-protected.
+//
+// 🔒 To re-enable the login wall, restore the block below:
+//
+//   import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+//
+//   const isPublicRoute = createRouteMatcher([
+//     '/sign-in(.*)',
+//     '/sign-up(.*)',
+//     '/api/webhook/clerk(.*)',
+//   ]);
+//
+//   export default clerkMiddleware((auth, request) => {
+//     if (!isPublicRoute(request)) {
+//       auth().protect();
+//     }
+//   });
+// ─────────────────────────────────────────────────────────────────────────────
 
-export default clerkMiddleware((auth, request) => {
-  if (!isPublicRoute(request)) {
-    auth().protect();
-  }
-});
+export default clerkMiddleware();
 
 export const config = {
   matcher: [
