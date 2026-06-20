@@ -41,7 +41,7 @@ export default function NotFound() {
         
         <div className="glass p-6 rounded-xl mb-6">
           <p className="text-secondary-300 mb-4">
-            The page you're looking for doesn't exist or has been moved.
+            The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
           <p className="text-sm text-secondary-400">
             Redirecting to home in <span className="text-primary-400 font-medium">{count}</span> seconds...

@@ -10,7 +10,7 @@ import {
   useCallStateHooks,
 } from '@stream-io/video-react-sdk';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Users, LayoutList } from 'lucide-react';
+import { Users, LayoutList, Captions } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -21,6 +21,8 @@ import {
 } from './ui/dropdown-menu';
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
+import LiveTranscription from './LiveTranscription';
+import AIAssistant from './AIAssistant';
 import { cn } from '@/lib/utils';
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
@@ -31,6 +33,7 @@ const MeetingRoom = () => {
   const router = useRouter();
   const [layout, setLayout] = useState<CallLayoutType>('speaker-left');
   const [showParticipants, setShowParticipants] = useState(false);
+  const [showCaptions, setShowCaptions] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
 
   // for more detail about types of CallingState see: https://getstream.io/video/docs/react/ui-cookbook/ringing-call/#incoming-call-panel
@@ -94,8 +97,22 @@ const MeetingRoom = () => {
             <Users size={20} className="text-white" />
           </div>
         </button>
+        <button onClick={() => setShowCaptions((prev) => !prev)} title="Live captions">
+          <div
+            className={cn(
+              'cursor-pointer rounded-2xl px-4 py-2',
+              showCaptions ? 'bg-[#4c535b]' : 'bg-[#19232d] hover:bg-[#4c535b]',
+            )}
+          >
+            <Captions size={20} className="text-white" />
+          </div>
+        </button>
         {!isPersonalRoom && <EndCallButton />}
       </div>
+
+      {/* AI-native meeting features */}
+      <LiveTranscription isOpen={showCaptions} onClose={() => setShowCaptions(false)} />
+      <AIAssistant isInMeeting />
     </section>
   );
 };

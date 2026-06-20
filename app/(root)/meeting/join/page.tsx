@@ -49,7 +49,7 @@ const JoinMeetingPage = () => {
       const response = await call.get();
       
       // Check if meeting requires password
-      const hasPassword = response.custom?.hasPassword;
+      const hasPassword = response.call.custom?.hasPassword;
       setRequiresPassword(!!hasPassword);
       
       if (!hasPassword) {
@@ -93,7 +93,7 @@ const JoinMeetingPage = () => {
       if (requiresPassword) {
         // Verify password (in a real app, this would be done server-side)
         const response = await call.get();
-        if (response.custom?.password !== password) {
+        if (response.call.custom?.password !== password) {
           toast({
             title: "Error",
             description: "Incorrect password. Please try again.",
@@ -176,7 +176,7 @@ const JoinMeetingPage = () => {
           </div>
           
           <div className="text-center text-sm text-secondary-400">
-            <p>Don't have a meeting ID? <a href="/meeting/new" className="text-primary-400 hover:underline">Start a new meeting</a></p>
+            <p>Don&apos;t have a meeting ID? <a href="/meeting/new" className="text-primary-400 hover:underline">Start a new meeting</a></p>
           </div>
         </div>
       </Card>

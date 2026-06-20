@@ -34,8 +34,10 @@ const nextConfig = {
             value: 'max-age=63072000; includeSubDomains; preload',
           },
           {
+            // Allow this origin to use camera/mic/screen-share (required for
+            // video calls + live transcription); deny geolocation.
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value: 'camera=(self), microphone=(self), display-capture=(self), geolocation=()',
           },
         ],
       },

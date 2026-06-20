@@ -82,7 +82,7 @@ const RecordingDetailPage = () => {
   const [showTranscript, setShowTranscript] = useState(true);
   
   // In a real app, you would fetch the recording data from an API
-  const recording = recordingData[id as string];
+  const recording = recordingData[id as keyof typeof recordingData];
   
   if (!recording) {
     return (
@@ -93,7 +93,7 @@ const RecordingDetailPage = () => {
           </svg>
         </div>
         <h2 className="text-xl font-bold mb-2">Recording Not Found</h2>
-        <p className="text-secondary-400 mb-6">The recording you're looking for doesn't exist or has been deleted</p>
+        <p className="text-secondary-400 mb-6">The recording you&apos;re looking for doesn&apos;t exist or has been deleted</p>
         <Button 
           onClick={() => router.push('/recordings')}
           className="bg-primary-600 hover:bg-primary-700 text-white"

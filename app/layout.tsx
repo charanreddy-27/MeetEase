@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { MeetingIntelligenceProvider } from "@/providers/MeetingIntelligenceProvider";
 
 // Optimize font loading
 const inter = Inter({
@@ -58,10 +59,12 @@ export default function RootLayout({
       >
         <body className="min-h-screen antialiased">
           <ThemeProvider>
-            <Toaster />
-            <main className="animate-fade">
-              {children}
-            </main>
+            <MeetingIntelligenceProvider>
+              <Toaster />
+              <main className="animate-fade">
+                {children}
+              </main>
+            </MeetingIntelligenceProvider>
           </ThemeProvider>
         </body>
       </ClerkProvider>

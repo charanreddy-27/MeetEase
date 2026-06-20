@@ -1,165 +1,209 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Button } from './ui/button';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { TRANSCRIPTION_LANGUAGES } from '@/lib/ai';
+import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { useMeetingIntelligence } from '@/providers/MeetingIntelligenceProvider';
 
 interface LiveTranscriptionProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface TranscriptionEntry {
-  id: number;
-  speaker: string;
-  text: string;
-  timestamp: string;
-  avatar: string;
-}
-
+/**
+ * Real-time transcription powered by the browser's Web Speech API.
+ * Captured speech is written to the shared MeetingIntelligence context so the
+ * AI copilot can summarize / answer questions about the actual conversation.
+ */
 const LiveTranscription = ({ isOpen, onClose }: LiveTranscriptionProps) => {
   const [isActive, setIsActive] = useState(true);
-  const [language, setLanguage] = useState('English');
-  const [transcriptions, setTranscriptions] = useState<TranscriptionEntry[]>([]);
-  
-  // Simulate incoming transcriptions
+  const [langCode, setLangCode] = useState('en-US');
+  const { entries, addEntry, setIsCapturing, getTranscriptText } =
+    useMeetingIntelligence();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const { isSupported, isListening, interimText, error, start, stop } =
+    useSpeechRecognition({
+      lang: langCode,
+      onFinalResult: (text) => addEntry({ speaker: 'You', text }),
+    });
+
+  // Start/stop recognition based on panel + toggle state.
   useEffect(() => {
-    if (!isOpen || !isActive) return;
-    
-    const speakers = [
-      { name: 'You', avatar: '/icons/avatar.svg' },
-      { name: 'John Doe', avatar: '/icons/avatar.svg' },
-      { name: 'Sarah Smith', avatar: '/icons/avatar.svg' },
-    ];
-    
-    const texts = [
-      "I think we should focus on improving the user interface first.",
-      "Yes, and we need to address the performance issues on mobile devices.",
-      "The analytics dashboard also needs an update before the next release.",
-      "Let's prioritize these tasks and create a timeline.",
-      "I agree. We should also consider user feedback from the last survey.",
-      "The new feature should be ready by next week if everything goes as planned.",
-    ];
-    
-    const addTranscription = () => {
-      const speaker = speakers[Math.floor(Math.random() * speakers.length)];
-      const text = texts[Math.floor(Math.random() * texts.length)];
-      const now = new Date();
-      const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-      
-      setTranscriptions(prev => [
-        ...prev,
-        {
-          id: Date.now(),
-          speaker: speaker.name,
-          text,
-          timestamp,
-          avatar: speaker.avatar
-        }
-      ]);
-    };
-    
-    // Add initial transcriptions
-    if (transcriptions.length === 0) {
-      for (let i = 0; i < 3; i++) {
-        setTimeout(() => addTranscription(), i * 500);
-      }
+    if (isOpen && isActive && isSupported) {
+      start();
+    } else {
+      stop();
     }
-    
-    // Add new transcription every few seconds
-    const interval = setInterval(addTranscription, 5000);
-    return () => clearInterval(interval);
-  }, [isOpen, isActive, transcriptions.length]);
-  
+    return () => stop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, isActive, isSupported, langCode]);
+
+  // Mirror capture state into the shared context (drives AI "listening" badge).
+  useEffect(() => {
+    setIsCapturing(isListening);
+  }, [isListening, setIsCapturing]);
+
+  // Auto-scroll to the newest line.
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [entries, interimText]);
+
+  const hasContent = entries.length > 0 || interimText.length > 0;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(getTranscriptText());
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([getTranscriptText()], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `meetease-transcript-${new Date().toISOString().slice(0, 10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const statusLabel = useMemo(() => {
+    if (!isSupported) return 'Unsupported';
+    if (!isActive) return 'Paused';
+    return isListening ? 'Listening' : 'Starting…';
+  }, [isSupported, isActive, isListening]);
+
   if (!isOpen) return null;
-  
+
   return (
-    <div className="fixed bottom-24 right-6 z-40 w-[400px] max-h-[500px] bg-dark-1 rounded-2xl shadow-card flex flex-col animate-scale-in overflow-hidden border border-dark-3/50">
-      <div className="bg-gradient-to-r from-purple-1 to-blue-1 p-4 flex justify-between items-center">
-        <h3 className="text-white font-semibold">Live Transcription</h3>
-        <div className="flex items-center gap-4">
+    <div className="animate-scale fixed bottom-24 right-6 z-40 flex max-h-[520px] w-[400px] flex-col overflow-hidden rounded-2xl border border-secondary-800 bg-secondary-900 shadow-2xl">
+      {/* Header */}
+      <div className="flex items-center justify-between bg-gradient-to-r from-primary-600 to-accent-600 p-4">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-white">Live Transcription</h3>
+          <span
+            className={cn(
+              'flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium',
+              isListening ? 'bg-white/20 text-white' : 'bg-black/20 text-white/80',
+            )}
+          >
+            {isListening && (
+              <span className="size-1.5 animate-pulse rounded-full bg-success-400" />
+            )}
+            {statusLabel}
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <Switch 
-              checked={isActive} 
-              onCheckedChange={setIsActive} 
-              className="data-[state=checked]:bg-green-1"
+            <Switch
+              checked={isActive}
+              onCheckedChange={setIsActive}
+              disabled={!isSupported}
+              className="data-[state=checked]:bg-success-500"
             />
-            <Label className="text-white text-sm">{isActive ? 'On' : 'Off'}</Label>
+            <Label className="text-sm text-white">{isActive ? 'On' : 'Off'}</Label>
           </div>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-8 w-8 rounded-full bg-white/10 hover:bg-white/20"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 rounded-full bg-white/10 hover:bg-white/20"
             onClick={onClose}
           >
             <Image src="/icons/close.svg" width={16} height={16} alt="Close" />
           </Button>
         </div>
       </div>
-      
-      <div className="flex items-center justify-between px-4 py-2 bg-dark-3/50">
-        <div className="flex gap-2 items-center">
-          <Image src="/icons/language.svg" width={18} height={18} alt="Language" />
-          <span className="text-white text-sm">Language:</span>
-        </div>
-        <select 
-          value={language} 
-          onChange={(e) => setLanguage(e.target.value)}
-          className="bg-dark-4 text-white text-sm border-none rounded-md px-2 py-1 focus:ring-1 focus:ring-blue-1"
+
+      {/* Language selector */}
+      <div className="flex items-center justify-between bg-secondary-800/60 px-4 py-2">
+        <span className="text-sm text-secondary-300">Language</span>
+        <select
+          value={langCode}
+          onChange={(e) => setLangCode(e.target.value)}
+          className="rounded-md border-none bg-secondary-700 px-2 py-1 text-sm text-white focus:ring-1 focus:ring-primary-500"
         >
-          <option value="English">English</option>
-          <option value="Spanish">Spanish</option>
-          <option value="French">French</option>
-          <option value="German">German</option>
-          <option value="Japanese">Japanese</option>
+          {TRANSCRIPTION_LANGUAGES.map((l) => (
+            <option key={l.code} value={l.code}>
+              {l.label}
+            </option>
+          ))}
         </select>
       </div>
-      
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 max-h-[320px]">
-        {transcriptions.length === 0 ? (
-          <div className="text-center text-gray-400 py-8">
-            <p>Transcription will appear here when someone speaks</p>
+
+      {/* Body */}
+      <div ref={scrollRef} className="flex max-h-[300px] flex-1 flex-col gap-4 overflow-y-auto p-4">
+        {!isSupported ? (
+          <div className="py-8 text-center text-sm text-secondary-400">
+            <p className="mb-1 font-medium text-secondary-200">
+              Live transcription isn’t supported in this browser.
+            </p>
+            <p>Try Google Chrome or Microsoft Edge for real-time speech-to-text.</p>
+          </div>
+        ) : error ? (
+          <div className="py-8 text-center text-sm text-danger-300">{error}</div>
+        ) : !hasContent ? (
+          <div className="py-8 text-center text-sm text-secondary-400">
+            <p>{isActive ? 'Listening… start speaking and your words will appear here.' : 'Transcription is paused.'}</p>
           </div>
         ) : (
-          transcriptions.map((entry) => (
-            <div key={entry.id} className="flex gap-3">
-              <Image 
-                src={entry.avatar} 
-                width={32} 
-                height={32} 
-                alt={entry.speaker} 
-                className="rounded-full" 
-              />
-              <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-medium text-white">{entry.speaker}</span>
-                  <span className="text-xs text-gray-400">{entry.timestamp}</span>
+          <>
+            {entries.map((entry) => (
+              <div key={entry.id} className="flex gap-3">
+                <Image
+                  src="/icons/avatar.svg"
+                  width={32}
+                  height={32}
+                  alt={entry.speaker}
+                  className="size-8 rounded-full"
+                />
+                <div className="flex-1">
+                  <div className="mb-1 flex items-center justify-between">
+                    <span className="font-medium text-white">{entry.speaker}</span>
+                    <span className="text-xs text-secondary-400">
+                      {new Date(entry.at).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </span>
+                  </div>
+                  <p className="text-secondary-200">{entry.text}</p>
                 </div>
-                <p className="text-gray-200">{entry.text}</p>
               </div>
-            </div>
-          ))
+            ))}
+            {interimText && (
+              <p className="pl-11 italic text-secondary-400">{interimText}…</p>
+            )}
+          </>
         )}
       </div>
-      
-      <div className="p-4 border-t border-dark-3/50 flex justify-between">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="text-xs border-dark-3 hover:bg-dark-3/50"
+
+      {/* Footer */}
+      <div className="flex justify-between border-t border-secondary-800 p-4">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={entries.length === 0}
+          onClick={handleDownload}
+          className="border-secondary-700 text-xs hover:bg-secondary-800"
         >
-          <Image src="/icons/download.svg" width={14} height={14} alt="Download" className="mr-1" />
+          <Image src="/icons/download.svg" width={14} height={14} alt="" className="mr-1" />
           Save Transcript
         </Button>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="text-xs border-dark-3 hover:bg-dark-3/50"
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={entries.length === 0}
+          onClick={handleCopy}
+          className="border-secondary-700 text-xs hover:bg-secondary-800"
         >
-          <Image src="/icons/copy.svg" width={14} height={14} alt="Copy" className="mr-1" />
+          <Image src="/icons/copy.svg" width={14} height={14} alt="" className="mr-1" />
           Copy All
         </Button>
       </div>
@@ -167,4 +211,4 @@ const LiveTranscription = ({ isOpen, onClose }: LiveTranscriptionProps) => {
   );
 };
 
-export default LiveTranscription; 
+export default LiveTranscription;

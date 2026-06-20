@@ -46,9 +46,17 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 
 # Stream Video
-NEXT_PUBLIC_STREAM_KEY=your_stream_key
-STREAM_SECRET=your_stream_secret
+NEXT_PUBLIC_STREAM_API_KEY=your_stream_api_key
+STREAM_SECRET_KEY=your_stream_secret
+
+# AI Copilot (optional — Claude-powered summaries, action items, Q&A)
+# Without this, the copilot runs in offline mode and live transcription
+# still works via the browser's built-in Web Speech API.
+ANTHROPIC_API_KEY=your_anthropic_api_key
+AI_MODEL=claude-sonnet-4-6
 ```
+
+> 💡 **Real AI features:** Live Transcription uses the browser's **Web Speech API** (Chrome/Edge — no key required). The **AI Copilot** streams responses from **Claude** when `ANTHROPIC_API_KEY` is set, grounded in the live transcript. See [`docs/`](./docs) for the full 2.0 blueprint.
 
 ### Installation
 
