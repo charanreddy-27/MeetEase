@@ -50,13 +50,13 @@ const Navbar = () => {
               src="/icons/logo.svg"
               width={32}
               height={32}
-              alt="MeetSync"
+              alt="MeetEase"
               className="relative z-10 p-1"
               priority
             />
           </div>
           <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-accent-400 hidden sm:block">
-            MeetSync
+            MeetEase
           </span>
         </Link>
 

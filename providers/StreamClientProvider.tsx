@@ -3,7 +3,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
 import { useUser } from '@clerk/nextjs';
-import Loader from '@/components/Loader';
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
@@ -77,11 +76,9 @@ const StreamClientProvider = ({ children }: StreamClientProviderProps) => {
     };
   }, [user, isLoaded]);
 
-  // Still resolving auth state.
-  if (!isLoaded) return <Loader />;
-
-  // EXPLORE MODE: if we couldn't create a video client (e.g. Stream keys aren't
-  // configured), let people browse the app anyway — just without live video.
+  // EXPLORE MODE: never block the whole app on auth or Stream init. Render the
+  // app immediately; once a video client is ready (real user or guest, with
+  // Stream keys configured) we transparently wrap children with <StreamVideo>.
   if (!videoClient) return <>{children}</>;
 
   return <StreamVideo client={videoClient}>{children}</StreamVideo>;

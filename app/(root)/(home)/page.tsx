@@ -24,7 +24,7 @@ const Home = () => {
               Next-Generation Video Conferencing
             </div>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400">MeetSync</span> <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400">MeetEase</span> <br />
               <span className="text-white">Smarter Meetings.</span>
             </h1>
             <p className="text-base md:text-lg text-secondary-300 max-w-lg">
@@ -89,7 +89,7 @@ const Home = () => {
       
       {/* Features section with tabs */}
       <section className="py-8 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
-        <h2 className="text-xl md:text-2xl font-bold mb-3 text-center">Why Choose MeetSync?</h2>
+        <h2 className="text-xl md:text-2xl font-bold mb-3 text-center">Why Choose MeetEase?</h2>
         <p className="text-center text-secondary-400 max-w-2xl mx-auto mb-6 text-sm md:text-base">Discover how our platform transforms your meeting experience with cutting-edge features</p>
         
         <div className="flex flex-wrap justify-center gap-3 mb-6">
@@ -209,7 +209,7 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="md:col-span-2 bg-gradient-to-r from-secondary-800 to-secondary-900 p-5 rounded-lg border border-secondary-700">
                 <h3 className="text-lg font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400">Enterprise-Grade Security</h3>
-                <p className="text-secondary-300 mb-4 text-sm md:text-base">MeetSync provides end-to-end encryption and advanced security features to keep your meetings private and secure.</p>
+                <p className="text-secondary-300 mb-4 text-sm md:text-base">MeetEase provides end-to-end encryption and advanced security features to keep your meetings private and secure.</p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <span className="px-3 py-1 bg-secondary-800 rounded-full text-xs">End-to-End Encryption</span>
                   <span className="px-3 py-1 bg-secondary-800 rounded-full text-xs">SOC 2 Compliant</span>

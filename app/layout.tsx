@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 
@@ -19,16 +19,17 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MeetSync",
+  title: "MeetEase",
   description: "Next-generation video conferencing platform",
   icons: {
     icon: "/icons/logo.svg",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
   themeColor: "#0f172a",
 };
 

@@ -1,6 +1,6 @@
 {
-  "name": "MeetSync",
-  "short_name": "MeetSync",
+  "name": "MeetEase",
+  "short_name": "MeetEase",
   "description": "Next-generation video conferencing platform",
   "start_url": "/",
   "display": "standalone",

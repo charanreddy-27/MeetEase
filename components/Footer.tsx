@@ -14,12 +14,12 @@ const Footer = () => {
                   src="/icons/logo.svg"
                   width={40}
                   height={40}
-                  alt="MeetSync"
+                  alt="MeetEase"
                   className="relative z-10 p-1.5"
                 />
               </div>
               <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-accent-400">
-                MeetSync
+                MeetEase
               </span>
             </Link>
             <p className="text-secondary-400 mb-6 max-w-md">
@@ -55,7 +55,7 @@ const Footer = () => {
         
         <div className="border-t border-secondary-800/50 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-secondary-400 text-sm">
-            &copy; {new Date().getFullYear()} MeetSync. All rights reserved.
+            &copy; {new Date().getFullYear()} MeetEase. All rights reserved.
           </p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <FooterLink href="/privacy" small>Privacy Policy</FooterLink>
