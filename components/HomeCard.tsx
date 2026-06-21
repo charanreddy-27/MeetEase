@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 
@@ -14,28 +15,25 @@ interface HomeCardProps {
 
 const HomeCard = ({ className, img, title, description, handleClick }: HomeCardProps) => {
   return (
-    <section
-      className={cn(
-        'bg-orange-1 px-5 py-7 flex flex-col justify-between w-full xl:max-w-[270px] min-h-[260px] rounded-[16px] cursor-pointer hover-card shadow-card transition-all duration-300',
-        className
-      )}
+    <motion.button
+      type="button"
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.98 }}
       onClick={handleClick}
+      className={cn(
+        'glassmorphic-card flex min-h-[260px] w-full flex-col justify-between rounded-2xl p-6 text-left xl:max-w-[270px]',
+        className,
+      )}
     >
-      <div className="flex-center glassmorphism size-14 rounded-[12px] shadow-soft">
-        <Image 
-          src={img} 
-          alt="meeting" 
-          width={28} 
-          height={28}
-          className="animate-pulse-gentle" 
-        />
+      <div className="flex size-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm">
+        <Image src={img} alt={title} width={28} height={28} className="brightness-150" />
       </div>
-      
-      <div className="flex flex-col gap-3">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-lg font-normal opacity-90">{description}</p>
+
+      <div className="flex flex-col gap-2">
+        <h1 className="font-heading text-2xl font-bold">{title}</h1>
+        <p className="text-base font-normal opacity-90">{description}</p>
       </div>
-    </section>
+    </motion.button>
   );
 };
 

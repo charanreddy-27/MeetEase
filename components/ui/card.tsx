@@ -7,18 +7,18 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-secondary-800/50 border border-secondary-700/30",
-        solid: "bg-secondary-800 border border-secondary-700",
-        gradient: "bg-gradient-to-br from-primary-900/50 to-secondary-900/50 border border-primary-800/30",
-        glass: "glass border border-white/10",
+        default: "bg-card/70 border border-border/60 backdrop-blur-sm",
+        solid: "bg-card border border-border",
+        gradient: "bg-gradient-to-br from-primary-900/40 to-card/70 border border-primary-800/30",
+        glass: "glassmorphic-card",
         glassDark: "glass-dark border border-white/5",
-        outline: "bg-transparent border border-secondary-700",
+        outline: "bg-transparent border border-border",
       },
       hover: {
         default: "hover-card",
         none: "",
         scale: "hover:scale-[1.02] transition-transform",
-        glow: "hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]",
+        glow: "hover:shadow-glow",
       },
       padding: {
         none: "",
@@ -86,7 +86,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-secondary-400", className)}
+    className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ))

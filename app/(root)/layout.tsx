@@ -21,16 +21,17 @@ export default function RootLayout({
 }) {
   return (
     <StreamClientProvider>
-      <div className="flex min-h-screen flex-col bg-gradient-to-br from-secondary-950 to-secondary-900">
+      <div className="relative flex min-h-screen flex-col bg-background">
+        {/* Ambient backdrop */}
+        <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_15%_-10%,hsl(346.8_77.2%_49.8%/0.10),transparent_45%),radial-gradient(circle_at_100%_0%,hsl(346.8_77.2%_49.8%/0.06),transparent_40%)]" />
+
         <Navbar />
 
         <div className="flex flex-1">
           <Sidebar />
 
-          <main className="ml-0 flex-1 px-4 pt-20 transition-all duration-300 ease-in-out md:ml-[240px] md:px-8 lg:px-12">
-            <div className="mx-auto w-full max-w-7xl">
-              {children}
-            </div>
+          <main className="ml-0 flex-1 px-4 pb-16 pt-24 transition-all duration-300 ease-in-out md:ml-[240px] md:px-8 lg:px-12">
+            <div className="mx-auto w-full max-w-7xl">{children}</div>
           </main>
         </div>
 

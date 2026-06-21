@@ -1,11 +1,8 @@
 # *
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /meeting/
+Disallow: /api/*
+Disallow: /meeting/*
 
 # Host
-Host: https://meetsync.vercel.app
-
-# Sitemaps
-Sitemap: https://meetsync.vercel.app/sitemap.xml 
+Host: http://localhost:3000

@@ -34,32 +34,36 @@ const MeetingModal = ({
 }: MeetingModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="flex w-full max-w-[520px] flex-col gap-7 border-none bg-dark-1 px-7 py-10 text-white rounded-2xl shadow-card animate-scale-in">
+      <DialogContent className="flex w-full max-w-[520px] flex-col gap-7 px-7 py-10">
         <div className="flex flex-col gap-6">
           {image && (
             <div className="flex justify-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-blue-3/20 rounded-full blur-xl animate-pulse-gentle"></div>
-                <Image 
-                  src={image} 
-                  alt="checked" 
-                  width={80} 
+                <div className="absolute inset-0 animate-pulse rounded-full bg-primary-500/20 blur-xl"></div>
+                <Image
+                  src={image}
+                  alt="checked"
+                  width={80}
                   height={80}
-                  className="relative z-10 animate-slide-up" 
+                  className="relative z-10 animate-slide-up"
                 />
               </div>
             </div>
           )}
-          <h1 className={cn("text-3xl font-bold leading-[42px] animate-fade-in", className)}>
+          <h1
+            className={cn(
+              "font-heading text-3xl font-bold leading-[42px] animate-fade",
+              className,
+            )}
+          >
             {title}
           </h1>
-          <div className="animate-slide-up">
-            {children}
-          </div>
+          <div className="animate-slide-up">{children}</div>
           <Button
+            variant="gradient"
             className={cn(
-              "bg-blue-1 hover:bg-blue-2 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-button transition-all duration-300 hover:translate-y-[-2px] text-base font-medium py-6 rounded-xl",
-              buttonClassName
+              "rounded-xl py-6 text-base font-medium transition-all duration-300 hover:translate-y-[-2px]",
+              buttonClassName,
             )}
             onClick={handleClick}
           >

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import { Plus, LogIn } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
@@ -23,12 +24,9 @@ const MobileNav = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  
-  // Prefetch all routes for instant navigation
+
   useEffect(() => {
-    navLinks.forEach(link => {
-      router.prefetch(link.route);
-    });
+    navLinks.forEach((link) => router.prefetch(link.route));
   }, [router]);
 
   const handleNavigation = (route: string) => {
@@ -40,80 +38,86 @@ const MobileNav = () => {
     <div className="md:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <button 
-            className="flex flex-col gap-1 p-2 focus:outline-none z-50" 
+          <button
+            className="z-50 flex flex-col gap-1 p-2 focus:outline-none"
             aria-label="Menu"
           >
-            <span className={cn(
-              "block w-5 h-0.5 bg-white transition-all duration-300",
-              isOpen && "translate-y-1.5 rotate-45"
-            )}></span>
-            <span className={cn(
-              "block w-5 h-0.5 bg-white transition-all duration-300",
-              isOpen && "opacity-0"
-            )}></span>
-            <span className={cn(
-              "block w-5 h-0.5 bg-white transition-all duration-300",
-              isOpen && "-translate-y-1.5 -rotate-45"
-            )}></span>
+            <span
+              className={cn(
+                'block h-0.5 w-5 bg-foreground transition-all duration-300',
+                isOpen && 'translate-y-1.5 rotate-45',
+              )}
+            />
+            <span
+              className={cn(
+                'block h-0.5 w-5 bg-foreground transition-all duration-300',
+                isOpen && 'opacity-0',
+              )}
+            />
+            <span
+              className={cn(
+                'block h-0.5 w-5 bg-foreground transition-all duration-300',
+                isOpen && '-translate-y-1.5 -rotate-45',
+              )}
+            />
           </button>
         </SheetTrigger>
-        
-        <SheetContent 
-          side="right" 
-          className="w-full max-w-[280px] p-0 border-none bg-gradient-to-b from-secondary-900 to-secondary-950 z-50"
+
+        <SheetContent
+          side="right"
+          className="z-50 w-full max-w-[300px] border-l border-border/60 bg-background/95 p-0 backdrop-blur-xl"
         >
-          <div className="flex flex-col h-full">
-            <div className="p-4 border-b border-secondary-800/50">
+          <div className="flex h-full flex-col">
+            <div className="border-b border-border/60 p-4">
               <div className="flex items-center gap-2">
-                <div className="relative size-8 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-purple-500 to-accent-600 rounded-lg" />
+                <div className="relative size-9 overflow-hidden rounded-xl">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-600 to-accent-500" />
                   <Image
                     src="/icons/logo.svg"
-                    width={32}
-                    height={32}
+                    width={36}
+                    height={36}
                     alt="MeetEase"
-                    className="relative z-10 p-1"
+                    className="relative z-10 p-1.5"
                     priority
                   />
                 </div>
-                <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-accent-400">
+                <span className="font-heading text-lg font-bold gradient-text">
                   MeetEase
                 </span>
               </div>
             </div>
-            
-            <nav className="flex-1 overflow-y-auto py-4 px-3 scrollbar-thin scrollbar-thumb-secondary-700 scrollbar-track-transparent">
-              <ul className="flex flex-col gap-1.5">
+
+            <nav className="scrollbar-thin scrollbar-thumb-secondary-700 flex-1 overflow-y-auto px-3 py-4">
+              <ul className="flex flex-col gap-1">
                 {navLinks.map((link) => {
-                  const isActive = pathname === link.route || pathname.startsWith(`${link.route}/`);
-                  
+                  const isActive =
+                    link.route === '/'
+                      ? pathname === '/'
+                      : pathname === link.route || pathname.startsWith(`${link.route}/`);
+
                   return (
                     <li key={link.route}>
                       <button
                         onClick={() => handleNavigation(link.route)}
                         className={cn(
-                          "w-full text-left px-3 py-2.5 rounded-lg transition-all flex items-center gap-3",
-                          isActive 
-                            ? "bg-gradient-to-r from-purple-500/20 to-accent-600/20 text-purple-400 shadow-sm" 
-                            : "text-secondary-300 hover:bg-secondary-800/80 hover:text-white"
+                          'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-all',
+                          isActive
+                            ? 'bg-primary-500/10 text-primary-400'
+                            : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
                         )}
                       >
-                        <div className="relative flex-shrink-0 size-5 flex items-center justify-center">
+                        <span className="relative flex size-5 flex-shrink-0 items-center justify-center">
                           <Image
                             src={link.icon}
                             alt=""
                             width={18}
                             height={18}
                             className={cn(
-                              "brightness-110 contrast-125",
-                              isActive ? "text-purple-400 filter-none" : "opacity-80"
+                              'brightness-110',
+                              isActive ? 'opacity-100' : 'opacity-70',
                             )}
                           />
-                          {isActive && (
-                            <span className="absolute -right-0.5 -top-0.5 size-2 bg-purple-500 rounded-full animate-pulse" />
-                          )}
-                        </div>
+                        </span>
                         <span className="text-sm font-medium">{link.label}</span>
                       </button>
                     </li>
@@ -121,29 +125,22 @@ const MobileNav = () => {
                 })}
               </ul>
             </nav>
-            
-            <div className="p-3 border-t border-secondary-800/50 bg-secondary-900/95">
-              <div className="flex flex-col gap-2.5">
-                <button 
-                  className="w-full py-2.5 px-3 bg-gradient-to-r from-purple-500 to-accent-600 hover:from-purple-600 hover:to-accent-700 text-white rounded-lg transition-all shadow-md text-sm font-medium flex items-center justify-center gap-2"
-                  onClick={() => handleNavigation('/meeting/new')}
-                >
-                  <Image 
-                    src="/icons/add-meeting.svg" 
-                    alt="" 
-                    width={16} 
-                    height={16}
-                    className="brightness-110"
-                  />
-                  New Meeting
-                </button>
-                <button 
-                  className="w-full py-2.5 px-3 bg-secondary-800 hover:bg-secondary-700 text-white rounded-lg transition-colors text-sm font-medium border border-secondary-700/50"
-                  onClick={() => handleNavigation('/sign-out')}
-                >
-                  Sign Out
-                </button>
-              </div>
+
+            <div className="space-y-2.5 border-t border-border/60 p-3">
+              <button
+                className="neumorphic-button-primary flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium"
+                onClick={() => handleNavigation('/meeting/new')}
+              >
+                <Plus className="size-4" />
+                New Meeting
+              </button>
+              <button
+                className="neumorphic-button flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground"
+                onClick={() => handleNavigation('/meeting/join')}
+              >
+                <LogIn className="size-4" />
+                Join Meeting
+              </button>
             </div>
           </div>
         </SheetContent>

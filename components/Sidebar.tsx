@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { Plus, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const sidebarLinks = [
@@ -21,84 +22,72 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Prefetch all routes for instant navigation
   useEffect(() => {
-    sidebarLinks.forEach(link => {
-      router.prefetch(link.route);
-    });
+    sidebarLinks.forEach((link) => router.prefetch(link.route));
   }, [router]);
 
   return (
-    <aside className="hidden md:flex flex-col h-screen w-[240px] bg-gradient-to-b from-secondary-900 to-secondary-950 border-r border-secondary-800/50 fixed left-0 top-0 z-40">
-      <div className="flex flex-col flex-1 overflow-y-auto pt-16 pb-4 px-3 scrollbar-thin scrollbar-thumb-secondary-700 scrollbar-track-transparent">
-        <div className="space-y-1.5">
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[240px] flex-col border-r border-border/60 bg-background/60 backdrop-blur-xl md:flex">
+      <div className="scrollbar-thin scrollbar-thumb-secondary-700 scrollbar-track-transparent flex flex-1 flex-col overflow-y-auto px-3 pb-4 pt-20">
+        <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Menu
+        </p>
+        <div className="space-y-1">
           {sidebarLinks.map((item) => {
-            const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`);
-            
+            const isActive =
+              item.route === '/'
+                ? pathname === '/'
+                : pathname === item.route || pathname.startsWith(`${item.route}/`);
+
             return (
               <Link
                 href={item.route}
                 key={item.label}
-                prefetch={true}
+                prefetch
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm',
-                  isActive 
-                    ? 'bg-gradient-to-r from-purple-500/20 to-accent-600/20 text-purple-400 shadow-sm' 
-                    : 'text-secondary-300 hover:bg-secondary-800/80 hover:text-white'
+                  'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all',
+                  isActive
+                    ? 'bg-primary-500/10 font-medium text-primary-400 shadow-sm'
+                    : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
                 )}
               >
-                <div className="relative flex-shrink-0 size-5 flex items-center justify-center">
+                {isActive && (
+                  <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-gradient-to-b from-primary-500 to-accent-500" />
+                )}
+                <span className="relative flex size-5 flex-shrink-0 items-center justify-center">
                   <Image
                     src={item.imgURL}
                     alt={item.label}
                     width={18}
                     height={18}
                     className={cn(
-                      "brightness-110 contrast-125",
-                      isActive ? "text-purple-400 filter-none" : "opacity-80"
+                      'brightness-110 transition-opacity',
+                      isActive ? 'opacity-100' : 'opacity-70 group-hover:opacity-100',
                     )}
                   />
-                  {isActive && (
-                    <span className="absolute -right-0.5 -top-0.5 size-2 bg-purple-500 rounded-full animate-pulse" />
-                  )}
-                </div>
+                </span>
                 <span className="font-medium">{item.label}</span>
               </Link>
             );
           })}
         </div>
       </div>
-      
-      <div className="p-3 mt-auto border-t border-secondary-800/50 bg-secondary-900/95">
-        <div className="space-y-2.5">
-          <Link
-            href="/meeting/new"
-            className="flex items-center justify-center gap-2 w-full py-2.5 px-3 bg-gradient-to-r from-purple-500 to-accent-600 hover:from-purple-600 hover:to-accent-700 text-white rounded-lg transition-all shadow-md"
-          >
-            <Image 
-              src="/icons/add-meeting.svg" 
-              alt="New Meeting" 
-              width={16} 
-              height={16} 
-              className="brightness-110"
-            />
-            <span className="text-sm font-medium">New Meeting</span>
-          </Link>
-          
-          <Link
-            href="/meeting/join"
-            className="flex items-center justify-center gap-2 w-full py-2.5 px-3 bg-secondary-800 hover:bg-secondary-750 text-white rounded-lg transition-colors border border-secondary-700/50"
-          >
-            <Image 
-              src="/icons/join.svg" 
-              alt="Join Meeting" 
-              width={16} 
-              height={16} 
-              className="brightness-110"
-            />
-            <span className="text-sm font-medium">Join Meeting</span>
-          </Link>
-        </div>
+
+      <div className="mt-auto space-y-2.5 border-t border-border/60 bg-background/40 p-3">
+        <Link
+          href="/meeting/new"
+          className="neumorphic-button-primary flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium"
+        >
+          <Plus className="size-4" />
+          New Meeting
+        </Link>
+        <Link
+          href="/meeting/join"
+          className="neumorphic-button flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground"
+        >
+          <LogIn className="size-4" />
+          Join Meeting
+        </Link>
       </div>
     </aside>
   );

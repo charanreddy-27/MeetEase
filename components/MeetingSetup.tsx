@@ -60,28 +60,34 @@ const MeetingSetup = ({
     );
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 text-white">
-      <h1 className="text-center text-2xl font-bold">Setup</h1>
-      <VideoPreview />
-      <div className="flex h-16 items-center justify-center gap-3">
-        <label className="flex items-center justify-center gap-2 font-medium">
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-5 bg-background p-4 text-foreground">
+      <div className="text-center">
+        <h1 className="font-heading text-3xl font-bold tracking-tight">
+          Ready to <span className="gradient-text">join?</span>
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Check your camera and mic before you go in.
+        </p>
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border border-border/60 shadow-2xl">
+        <VideoPreview />
+      </div>
+
+      <div className="flex h-16 items-center justify-center gap-4">
+        <label className="flex cursor-pointer items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
           <input
             type="checkbox"
             checked={isMicCamToggled}
             onChange={(e) => setIsMicCamToggled(e.target.checked)}
+            className="size-4 accent-primary-600"
           />
           Join with mic and camera off
         </label>
         <DeviceSettings />
       </div>
-      <Button
-        className="rounded-md bg-green-500 px-4 py-2.5"
-        onClick={() => {
-          call.join();
 
-          setIsSetupComplete(true);
-        }}
-      >
+      <Button variant="gradient" size="lg" onClick={() => { call.join(); setIsSetupComplete(true); }}>
         Join meeting
       </Button>
     </div>
