@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
+import ScrollToTop from '@/components/effects/ScrollToTop';
 import StreamClientProvider from '@/providers/StreamClientProvider';
 
 // 🚪 EXPLORE MODE — the sign-in redirect is disabled so guests can browse the
@@ -36,6 +37,7 @@ export default function RootLayout({
         </div>
 
         <Footer />
+        <ScrollToTop />
       </div>
     </StreamClientProvider>
   );

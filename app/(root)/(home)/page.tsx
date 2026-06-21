@@ -13,6 +13,10 @@ import MouseGlow from '@/components/effects/MouseGlow';
 import AnimatedBackground from '@/components/effects/AnimatedBackground';
 import SpotlightCard from '@/components/effects/SpotlightCard';
 import GradientButton from '@/components/effects/GradientButton';
+import StatsSection from '@/components/sections/StatsSection';
+import HowItWorksSection from '@/components/sections/HowItWorksSection';
+import TestimonialsSection from '@/components/sections/TestimonialsSection';
+import FaqSection from '@/components/sections/FaqSection';
 
 const Home = () => {
   const now = new Date();
@@ -145,6 +149,9 @@ const Home = () => {
         <MeetingTypeList />
       </ScrollReveal>
 
+      {/* ----------------------------------------------------------------- Stats */}
+      <StatsSection />
+
       {/* -------------------------------------------------------------- Features */}
       <ScrollReveal className="py-8">
         <SectionHeading
@@ -240,6 +247,9 @@ const Home = () => {
         </div>
       </ScrollReveal>
 
+      {/* ---------------------------------------------------------- How it works */}
+      <HowItWorksSection />
+
       {/* ----------------------------------------------------------- Quick access */}
       <ScrollReveal className="py-8">
         <SectionHeading title="Quick Access" subtitle="Everything one click away" />
@@ -250,6 +260,12 @@ const Home = () => {
           <QuickAccessCard Icon={Sparkles} title="Settings" description="Configure your preferences" link="/settings" />
         </div>
       </ScrollReveal>
+
+      {/* ---------------------------------------------------------- Testimonials */}
+      <TestimonialsSection />
+
+      {/* ------------------------------------------------------------------- FAQ */}
+      <FaqSection />
 
       {/* ------------------------------------------------------------------- CTA */}
       <ScrollReveal className="py-8">

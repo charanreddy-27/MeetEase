@@ -67,46 +67,60 @@ const MeetingRoom = () => {
         </div>
       </div>
       {/* video layout and call controls */}
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
+      <div className="fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-2xl border border-border/60 bg-background/70 px-3 py-2 shadow-2xl backdrop-blur-xl">
         <CallControls onLeave={() => router.push(`/`)} />
 
         <DropdownMenu>
           <div className="flex items-center">
-            <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]  ">
-              <LayoutList size={20} className="text-white" />
+            <DropdownMenuTrigger
+              className="cursor-pointer rounded-xl bg-secondary-800/70 px-4 py-2 text-foreground transition-colors hover:bg-secondary-700"
+              title="Change layout"
+            >
+              <LayoutList size={20} />
             </DropdownMenuTrigger>
           </div>
-          <DropdownMenuContent className="border-dark-1 bg-dark-1 text-white">
+          <DropdownMenuContent>
             {['Grid', 'Speaker-Left', 'Speaker-Right'].map((item, index) => (
               <div key={index}>
                 <DropdownMenuItem
-                  onClick={() =>
-                    setLayout(item.toLowerCase() as CallLayoutType)
-                  }
+                  onClick={() => setLayout(item.toLowerCase() as CallLayoutType)}
                 >
                   {item}
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="border-dark-1" />
+                {index < 2 && <DropdownMenuSeparator />}
               </div>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
         <CallStatsButton />
-        <button onClick={() => setShowParticipants((prev) => !prev)}>
-          <div className=" cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]  ">
-            <Users size={20} className="text-white" />
-          </div>
+
+        <button
+          onClick={() => setShowParticipants((prev) => !prev)}
+          title="Participants"
+          className={cn(
+            'cursor-pointer rounded-xl px-4 py-2 text-foreground transition-colors',
+            showParticipants
+              ? 'bg-primary-600 hover:bg-primary-700'
+              : 'bg-secondary-800/70 hover:bg-secondary-700',
+          )}
+        >
+          <Users size={20} />
         </button>
-        <button onClick={() => setShowCaptions((prev) => !prev)} title="Live captions">
-          <div
-            className={cn(
-              'cursor-pointer rounded-2xl px-4 py-2',
-              showCaptions ? 'bg-[#4c535b]' : 'bg-[#19232d] hover:bg-[#4c535b]',
-            )}
-          >
-            <Captions size={20} className="text-white" />
-          </div>
+
+        <button
+          onClick={() => setShowCaptions((prev) => !prev)}
+          title="Live captions"
+          className={cn(
+            'cursor-pointer rounded-xl px-4 py-2 text-foreground transition-colors',
+            showCaptions
+              ? 'bg-primary-600 hover:bg-primary-700'
+              : 'bg-secondary-800/70 hover:bg-secondary-700',
+          )}
+        >
+          <Captions size={20} />
         </button>
+
         {!isPersonalRoom && <EndCallButton />}
       </div>
 
