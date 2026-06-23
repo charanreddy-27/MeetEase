@@ -10,12 +10,6 @@
 
 </div>
 
-> _Replace the live link above with your real Vercel URL once deployed. Drop a hero screenshot or GIF below — it's the first thing a recruiter sees._
-
-<!-- ![MeetEase screenshot](public/images/screenshot.png) -->
-<p align="center"><em>📸 Add a screenshot or 30-second GIF here.</em></p>
-
----
 
 ## Why this exists
 
