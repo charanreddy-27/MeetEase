@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSafeUser as useUser } from '@/lib/clerk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
@@ -15,7 +15,11 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
 
-const NewMeetingPage = () => {
+// `useSearchParams()` requires a <Suspense> boundary; without one, Next.js
+// throws while statically prerendering this page (the Vercel build error on
+// /meeting/new). Keeping the search-param read inside this inner component lets
+// the exported page wrap it in Suspense below.
+const NewMeetingContent = () => {
   const router = useRouter();
   const { user } = useUser();
   const client = useStreamVideoClient();
@@ -235,5 +239,20 @@ const MeetingTypeOption = ({ value, title, description, icon, selectedValue }: M
     </label>
   );
 };
+
+const NewMeetingPage = () => (
+  <Suspense
+    fallback={
+      <div className="max-w-3xl mx-auto py-8 px-4">
+        <h1 className="text-2xl font-bold mb-6">Create New Meeting</h1>
+        <Card className="bg-secondary-900 border-secondary-800 p-6 mb-6">
+          <div className="h-64 animate-pulse rounded-lg bg-secondary-800" />
+        </Card>
+      </div>
+    }
+  >
+    <NewMeetingContent />
+  </Suspense>
+);
 
 export default NewMeetingPage;
