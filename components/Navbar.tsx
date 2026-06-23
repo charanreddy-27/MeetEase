@@ -5,7 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import {
+  SafeSignedIn as SignedIn,
+  SafeSignedOut as SignedOut,
+  SafeUserButton as UserButton,
+} from '@/lib/clerk';
 import { cn } from '@/lib/utils';
 
 import MobileNav from './MobileNav';
@@ -13,8 +17,8 @@ import ThemeToggle from './ThemeToggle';
 
 const navItems = [
   { name: 'Home', href: '/' },
-  { name: 'Features', href: '/features' },
-  { name: 'Pricing', href: '/pricing' },
+  { name: 'The Build', href: '/about-project' },
+  { name: 'About', href: '/about' },
   { name: 'Support', href: '/support' },
 ];
 

@@ -1,251 +1,97 @@
-# MeetSync - Next Generation Video Conferencing
+<div align="center">
 
-MeetSync is a modern video conferencing platform built with Next.js, featuring AI-powered meeting assistance, real-time collaboration tools, and a sleek user interface.
+# MeetEase
 
-## Features
+### Smarter meetings, beautifully simple.
 
-- **Instant Meetings**: Start meetings with a single click
-- **Personal Meeting Rooms**: Dedicated spaces for recurring meetings
-- **AI Meeting Assistant**: Get real-time summaries and action items
-- **Live Transcription**: Automatic speech-to-text with language support
-- **Collaborative Whiteboard**: Draw and collaborate in real-time
-- **Virtual Backgrounds**: Choose from various backgrounds or upload your own
-- **Cloud Recording**: Record meetings and access them anytime
+**An AI-native video conferencing app — HD calls, live in-browser transcription, and a Claude-powered copilot that summarizes the meeting and pulls action items while you're still talking.**
 
-## Tech Stack
+[Live demo](https://meet-ease-charan.vercel.app/) · [The build story](https://meet-ease-charan.vercel.app/about-project) · [About the developer](https://meet-ease-charan.vercel.app/about)
 
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS, shadcn/ui components
-- **Authentication**: Clerk
-- **Video SDK**: Stream Video
-- **Deployment**: Vercel
+</div>
 
-## Getting Started
+> _Replace the live link above with your real Vercel URL once deployed. Drop a hero screenshot or GIF below — it's the first thing a recruiter sees._
 
-### Prerequisites
-
-- Node.js 18 or later
-- npm or yarn
-- Stream account for video SDK
-- Clerk account for authentication
-
-### Environment Variables
-
-Create a `.env.local` file in the root directory with the following variables:
-
-```
-# Base URL
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-
-# Clerk Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
-
-# Stream Video
-NEXT_PUBLIC_STREAM_API_KEY=your_stream_api_key
-STREAM_SECRET_KEY=your_stream_secret
-
-# AI Copilot (optional — Claude-powered summaries, action items, Q&A)
-# Without this, the copilot runs in offline mode and live transcription
-# still works via the browser's built-in Web Speech API.
-ANTHROPIC_API_KEY=your_anthropic_api_key
-AI_MODEL=claude-sonnet-4-6
-```
-
-> 💡 **Real AI features:** Live Transcription uses the browser's **Web Speech API** (Chrome/Edge — no key required). The **AI Copilot** streams responses from **Claude** when `ANTHROPIC_API_KEY` is set, grounded in the live transcript. See [`docs/`](./docs) for the full 2.0 blueprint.
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/meetsync.git
-   cd meetsync
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Run the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Deployment to Vercel
-
-### One-Click Deployment
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Fmeetsync&env=NEXT_PUBLIC_BASE_URL,NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,CLERK_SECRET_KEY,NEXT_PUBLIC_CLERK_SIGN_IN_URL,NEXT_PUBLIC_CLERK_SIGN_UP_URL,NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL,NEXT_PUBLIC_STREAM_KEY,STREAM_SECRET&project-name=meetsync&repository-name=meetsync)
-
-### Manual Deployment
-
-1. Push your code to GitHub.
-
-2. Log in to [Vercel](https://vercel.com) and import your repository.
-
-3. Configure the environment variables in the Vercel dashboard.
-
-4. Deploy your application.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Project Structure
-
-```
-meetsync/
-├── actions/        # Server actions
-├── app/            # App router pages and layouts
-├── components/     # React components
-├── constants/      # Application constants
-├── hooks/          # Custom React hooks
-├── lib/            # Utility functions
-├── providers/      # Context providers
-└── public/         # Static assets
-```
-
-## Key Components
-
-- **Navbar**: Navigation with scroll-based transparency
-- **Sidebar**: Main navigation for authenticated users
-- **AIAssistant**: AI-powered meeting assistant
-- **MeetingTypeList**: Different meeting creation options
-- **StreamClientProvider**: Video client initialization
-
-## Performance Optimizations
-
-- Memoized components for better rendering performance
-- Optimized animations with reduced motion support
-- Proper cleanup in useEffect hooks
-- Image optimization with Next.js Image component
-- Route prefetching for faster navigation
-
-## Design System
-
-The application uses a custom design system built on Tailwind CSS with:
-
-- Custom color palette with primary, secondary, accent, danger, and warning colors
-- Consistent spacing and typography
-- Modern glass effects
-- Smooth animations and transitions
-- Dark mode support
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Acknowledgments
-
-- [Next.js](https://nextjs.org/)
-- [Clerk](https://clerk.dev/)
-- [Stream](https://getstream.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Shadcn UI](https://ui.shadcn.com/)
-
-## <a name="tech-stack">⚙️ Tech Stack</a>
-
-- Next.js
-- TypeScript
-- Clerk
-- getstream
-- shadcn
-- Tailwind CSS
-
-## <a name="features">🔋 Features</a>
-
-👉 **Authentication**: Implements authentication and authorization features using Clerk, allowing users to securely log in via social sign-on or traditional email and password methods, while ensuring appropriate access levels and permissions within the platform.
-
-👉 **New Meeting**: Quickly start a new meeting, configuring camera and microphone settings before joining.
-
-👉 **Meeting Controls**: Participants have full control over meeting aspects, including recording, emoji reactions, screen sharing, muting/unmuting, sound adjustments, grid layout, participant list view, and individual participant management (pinning, muting, unmuting, blocking, allowing video share).
-
-👉 **Exit Meeting**: Participants can leave a meeting, or creators can end it for all attendees.
-
-👉 **Schedule Future Meetings**: Input meeting details (date, time) to schedule future meetings, accessible on the 'Upcoming Meetings' page for sharing the link or immediate start.
-
-👉 **Past Meetings List**: Access a list of previously held meetings, including details and metadata.
-
-👉 **View Recorded Meetings**: Access recordings of past meetings for review or reference.
-
-👉 **Personal Room**: Users have a personal room with a unique meeting link for instant meetings, shareable with others.
-
-👉 **Join Meetings via Link**: Easily join meetings created by others by providing a link.
-
-👉 **Secure Real-time Functionality**: All interactions within the platform are secure and occur in real-time, maintaining user privacy and data integrity.
-
-👉 **Responsive Design**: Follows responsive design principles to ensure optimal user experience across devices, adapting seamlessly to different screen sizes and resolutions.
-
-and many more, including code architecture and reusability. 
-
-## <a name="quick-start">🤸 Quick Start</a>
-
-**Cloning the Repository**
-
-```bash
-git clone https://github.com/adrianhajdin/zoom-clone.git
-cd zoom-clone
-```
-
-**Installation**
-
-Install the project dependencies using npm:
-
-```bash
-npm install
-```
-
-**Set Up Environment Variables**
-
-Create a new file named `.env` in the root of your project and add the following content:
-
-```env
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
-NEXT_PUBLIC_STREAM_API_KEY=
-STREAM_SECRET_KEY=
-```
-
-Replace the placeholder values with your actual Clerk & getstream credentials. You can obtain these credentials by signing up on the [Clerk website](https://clerk.com/) and [getstream website](https://getstream.io/)
-
-**Running the Project**
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
-
-## 🎨 **Connect With Me**
-<p align="center">
-  <a href="https://www.linkedin.com/in/chandacharanreddy/" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-Charan%20Reddy-blue?style=for-the-badge&logo=linkedin" alt="LinkedIn Badge"/></a>
-  <a href="mailto:charanreddychanda@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Email-charanreddychanda%40gmail.com-red?style=for-the-badge&logo=gmail" alt="Email Badge"/></a>
-  <a href="https://github.com/charanreddy-27" target="_blank"><img src="https://img.shields.io/badge/GitHub-charanreddy--27-lightgrey?style=for-the-badge&logo=github" alt="GitHub Badge"/></a>
-</p>
+<!-- ![MeetEase screenshot](public/images/screenshot.png) -->
+<p align="center"><em>📸 Add a screenshot or 30-second GIF here.</em></p>
 
 ---
 
-<p align="center" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; color: #4B4B4B;">
-  © 2025 <strong>Charan Reddy</strong>. All rights reserved.
-</p>
-<p align="center" style="font-family: 'Courier New', Courier, monospace; font-size: 16px; color: #8D8D8D;">
-</p>
+## Why this exists
+
+Most video apps treat AI like an afterthought — a summary email that lands an hour later, a transcript you have to go hunting for. MeetEase flips that: your microphone feeds a **live transcript**, and that transcript is handed to **Claude in real time**. Ask it to summarize, extract action items, or catch you up — mid-call, not tomorrow.
+
+The hard part was never the model. It was making the plumbing feel instant, and making the app stay up even when its external services aren't configured.
+
+## Features
+
+- 🎥 **HD multi-party video** — grid & speaker layouts, screen share, recordings (Stream)
+- 📝 **Live in-browser transcription** — native Web Speech API, no paid STT, no extra latency
+- 🤖 **Claude-powered copilot** — summaries, action items, and "catch me up", streamed token-by-token
+- 🚪 **Guest "explore mode"** — no login wall; sign-in is optional and switches on when keys are set
+- 🛡️ **Crash-proof by design** — Clerk, Stream, and Anthropic can each be missing and the app still loads
+- 🎨 **Crafted UI** — dark-first rose/near-black design system, glassmorphism, tasteful motion
+
+## Tech stack
+
+| Layer | Choice | Why |
+|---|---|---|
+| Framework | **Next.js 14** (App Router) | Server components, edge middleware, file-based OG images |
+| Video | **Stream Video SDK** | WebRTC is a tar pit; Stream handles the SFU/TURN |
+| Auth | **Clerk** | Drop-in, themeable auth — that now degrades gracefully |
+| AI | **Anthropic Claude** | Strong summarization + a clean streaming API |
+| Transcription | **Web Speech API** | Free, native, zero-latency speech-to-text |
+| Styling | **Tailwind CSS** + **Framer Motion** | A consistent design system + motion that earns its keep |
+| Hosting | **Vercel** | Zero-config Next.js deploys with first-class edge middleware |
+
+## Run it locally
+
+```bash
+# 1. Install
+npm install
+
+# 2. Configure environment
+cp .env.example .env.local
+#   …then fill in the keys (see below). All are optional — the app runs
+#   in guest "explore mode" without them.
+
+# 3. Develop
+npm run dev          # http://localhost:3000
+
+# 4. Production build
+npm run build && npm start
+```
+
+### Environment variables
+
+Every integration is **optional** and degrades gracefully — set what you have.
+
+| Variable | Service | Without it |
+|---|---|---|
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` | [Clerk](https://clerk.com) | Guest-only mode (no sign-in), app still loads |
+| `NEXT_PUBLIC_STREAM_API_KEY` / `STREAM_SECRET_KEY` | [Stream](https://getstream.io) | App is browsable, video disabled |
+| `ANTHROPIC_API_KEY` | [Anthropic](https://console.anthropic.com) | Copilot runs an honest offline fallback |
+| `NEXT_PUBLIC_BASE_URL` | — | Defaults to localhost; set to your deployed URL |
+
+> 💡 **Deploying?** See **[DEPLOYMENT.md](DEPLOYMENT.md)** — including the fix for the
+> `MIDDLEWARE_INVOCATION_FAILED` error you'll hit if Clerk keys aren't set on Vercel.
+
+## Documentation
+
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** — ship to Vercel, env vars, custom domain, manual checklist
+- **[PROJECT_DEEP_DIVE.md](PROJECT_DEEP_DIVE.md)** — architecture, data flow, the hard parts
+- **[INTERVIEW_PREP.md](INTERVIEW_PREP.md)** — how to talk about this project
+
+---
+
+## About the developer
+
+**Chanda Charan Reddy** — AI & Automation Engineer, Bangalore.
+
+I build production LLM systems — from a Springer-published model that reads chest X-rays to document pipelines that run themselves. Before all that, I wrote real-time control code for jet engines at DRDO, which is where I learned that a millisecond of lag isn't a bug — it's a flameout.
+
+MeetEase is one project. There are more (and a few jet engines) over at my portfolio.
+
+[🌐 Portfolio](https://www.charanreddy.dev) · [💼 LinkedIn](https://www.linkedin.com/in/chandacharanreddy/) · [🐙 GitHub](https://github.com/charanreddy-27) · [📅 Book a call](https://cal.com/charanreddy-27/30min)
+
+> **Building something — or want to break something interesting?** [Let's talk.](https://cal.com/charanreddy-27/30min)

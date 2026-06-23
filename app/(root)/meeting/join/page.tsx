@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
+import { useSafeUser as useUser } from '@/lib/clerk';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import Image from 'next/image';
 
@@ -120,7 +120,7 @@ const JoinMeetingPage = () => {
     <div className="max-w-md mx-auto py-12 px-4">
       <div className="text-center mb-8">
         <div className="size-16 bg-primary-600/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-          <Image src="/icons/video-plus.svg" width={32} height={32} alt="Join Meeting" />
+          <Image src="/icons/join-meeting.svg" width={32} height={32} alt="" />
         </div>
         <h1 className="text-2xl font-bold">Join a Meeting</h1>
         <p className="text-secondary-400 mt-2">Enter the meeting ID to join an existing meeting</p>

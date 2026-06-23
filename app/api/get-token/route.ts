@@ -7,7 +7,9 @@ const STREAM_API_SECRET = process.env.STREAM_SECRET_KEY;
 
 export async function POST(request: Request) {
   try {
-    const user = await currentUser();
+    // currentUser() throws if Clerk isn't configured — treat that as "no user"
+    // so guests can still mint a token (explore mode).
+    const user = await currentUser().catch(() => null);
 
     // EXPLORE MODE: fall back to a guest identity when nobody is signed in, so
     // unauthenticated visitors can still connect to Stream and explore.

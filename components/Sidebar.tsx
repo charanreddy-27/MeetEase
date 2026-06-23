@@ -15,6 +15,8 @@ const sidebarLinks = [
   { label: 'Recordings', route: '/recordings', imgURL: '/icons/recording.svg' },
   { label: 'Join Meeting', route: '/meeting/join', imgURL: '/icons/join.svg' },
   { label: 'Settings', route: '/settings', imgURL: '/icons/settings.svg' },
+  { label: 'The Build', route: '/about-project', imgURL: '/icons/summary.svg' },
+  { label: 'About', route: '/about', imgURL: '/icons/user.svg' },
   { label: 'Support', route: '/support', imgURL: '/icons/support.svg' },
 ];
 

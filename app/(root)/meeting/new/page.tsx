@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useSafeUser as useUser } from '@/lib/clerk';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { v4 as uuidv4 } from 'uuid';

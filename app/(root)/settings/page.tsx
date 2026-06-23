@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { useSafeUser as useUser } from '@/lib/clerk';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';

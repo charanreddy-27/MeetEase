@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
-import { useUser } from '@clerk/nextjs';
+import { useSafeUser as useUser } from '@/lib/clerk';
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 

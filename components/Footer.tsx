@@ -1,41 +1,43 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Twitter, Linkedin, Github } from 'lucide-react';
+import { Linkedin, Github, Globe, Calendar } from 'lucide-react';
+
+import { developer, project } from '@/lib/site';
 
 const footerSections = [
   {
-    title: 'Product',
+    title: 'Explore',
     links: [
-      { label: 'Features', href: '/features' },
-      { label: 'Pricing', href: '/pricing' },
-      { label: 'Integrations', href: '/integrations' },
-      { label: 'Changelog', href: '/changelog' },
+      { label: 'Home', href: '/' },
+      { label: 'Join a meeting', href: '/meeting/join' },
+      { label: 'Recordings', href: '/recordings' },
+      { label: 'Support', href: '/support' },
     ],
   },
   {
-    title: 'Company',
+    title: 'The Project',
     links: [
-      { label: 'About Us', href: '/about' },
-      { label: 'Careers', href: '/careers' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Contact', href: '/contact' },
+      { label: 'About the build', href: '/about-project' },
+      { label: 'About the developer', href: '/about' },
+      { label: 'Source code', href: project.repo, external: true },
     ],
   },
   {
-    title: 'Legal',
+    title: 'Connect',
     links: [
-      { label: 'Privacy', href: '/privacy' },
-      { label: 'Terms', href: '/terms' },
-      { label: 'Cookies', href: '/cookies' },
-      { label: 'Licenses', href: '/licenses' },
+      { label: 'Portfolio', href: developer.portfolio, external: true },
+      { label: 'Book a call', href: developer.bookACall, external: true },
+      { label: 'LinkedIn', href: developer.linkedin, external: true },
+      { label: 'GitHub', href: developer.github, external: true },
     ],
   },
 ];
 
 const socials = [
-  { label: 'Twitter', href: '#', Icon: Twitter },
-  { label: 'LinkedIn', href: '#', Icon: Linkedin },
-  { label: 'GitHub', href: '#', Icon: Github },
+  { label: 'Portfolio', href: developer.portfolio, Icon: Globe },
+  { label: 'LinkedIn', href: developer.linkedin, Icon: Linkedin },
+  { label: 'GitHub', href: developer.github, Icon: Github },
+  { label: 'Book a call', href: developer.bookACall, Icon: Calendar },
 ];
 
 const Footer = () => {
@@ -51,7 +53,7 @@ const Footer = () => {
                   src="/icons/logo.svg"
                   width={40}
                   height={40}
-                  alt="MeetEase"
+                  alt=""
                   className="relative z-10 p-1.5"
                 />
               </div>
@@ -60,19 +62,22 @@ const Footer = () => {
               </span>
             </Link>
             <p className="max-w-sm text-sm text-muted-foreground">
-              Next-generation video conferencing with AI-powered features, real-time
-              collaboration tools, and enterprise-grade security.
+              An AI-native take on video conferencing — HD calls, in-browser live
+              transcription, and a Claude-powered copilot that actually reads the
+              room. Built as a portfolio project by {developer.shortName}.
             </p>
             <div className="flex gap-3">
               {socials.map(({ label, href, Icon }) => (
-                <Link
+                <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="glassmorphic-icon"
                   aria-label={label}
                 >
                   <Icon className="size-5 text-muted-foreground transition-colors hover:text-primary-400" />
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -86,12 +91,23 @@ const Footer = () => {
                 <ul className="flex flex-col gap-2">
                   {section.links.map((link) => (
                     <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-primary-400"
-                      >
-                        {link.label}
-                      </Link>
+                      {'external' in link && link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-muted-foreground transition-colors hover:text-primary-400"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-muted-foreground transition-colors hover:text-primary-400"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -102,22 +118,20 @@ const Footer = () => {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-border/60 pt-8 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} MeetEase. All rights reserved.
+            &copy; {new Date().getFullYear()} MeetEase. Crafted with intent by{' '}
+            <a
+              href={developer.portfolio}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground transition-colors hover:text-primary-400"
+            >
+              {developer.name}
+            </a>
+            .
           </p>
-          <div className="flex gap-6">
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground transition-colors hover:text-primary-400"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground transition-colors hover:text-primary-400"
-            >
-              Privacy
-            </Link>
-          </div>
+          <p className="text-sm text-muted-foreground">
+            Available for new projects.
+          </p>
         </div>
       </div>
     </footer>

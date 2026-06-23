@@ -15,8 +15,8 @@ const navLinks = [
   { label: 'Recordings', route: '/recordings', icon: '/icons/recording.svg' },
   { label: 'Join Meeting', route: '/meeting/join', icon: '/icons/join.svg' },
   { label: 'Settings', route: '/settings', icon: '/icons/settings.svg' },
-  { label: 'Features', route: '/features', icon: '/icons/features.svg' },
-  { label: 'Pricing', route: '/pricing', icon: '/icons/pricing.svg' },
+  { label: 'The Build', route: '/about-project', icon: '/icons/summary.svg' },
+  { label: 'About', route: '/about', icon: '/icons/user.svg' },
   { label: 'Support', route: '/support', icon: '/icons/support.svg' },
 ];
 
